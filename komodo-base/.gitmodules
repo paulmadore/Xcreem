@@ -1,0 +1,21 @@
+[submodule "src/modules/trackchanges"]
+	path = src/modules/trackchanges
+	url = https://github.com/Komodo/trackchanges.git
+	branch = master
+[submodule "src/modules/golang"]
+	path = src/modules/golang
+	url = https://github.com/Komodo/komodo-go
+	branch = master
+[submodule "src/modules/markdown-viewer"]
+	path = src/modules/markdown-viewer
+	url = https://github.com/Komodo/markdown-viewer.git
+	branch = master
+[submodule "src/schemes/color_schemes"]
+	path = src/schemes/color_schemes
+	url = https://github.com/Komodo/komodo-color-schemes
+[submodule "src/modules/editorconfig"]
+	path = src/modules/editorconfig
+	url = https://github.com/Komodo/komodo-editorconfig.git
+[submodule "src/modules/focusmode"]
+	path = src/modules/focusmode
+	url = https://github.com/Komodo/Focus-Mode.git

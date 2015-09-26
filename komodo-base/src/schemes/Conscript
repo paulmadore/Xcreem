@@ -1,0 +1,142 @@
+#!/usr/local/bin/perl
+# ***** BEGIN LICENSE BLOCK *****
+# Version: MPL 1.1/GPL 2.0/LGPL 2.1
+# 
+# The contents of this file are subject to the Mozilla Public License
+# Version 1.1 (the "License"); you may not use this file except in
+# compliance with the License. You may obtain a copy of the License at
+# http://www.mozilla.org/MPL/
+# 
+# Software distributed under the License is distributed on an "AS IS"
+# basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+# License for the specific language governing rights and limitations
+# under the License.
+# 
+# The Original Code is Komodo code.
+# 
+# The Initial Developer of the Original Code is ActiveState Software Inc.
+# Portions created by ActiveState Software Inc are Copyright (C) 2000-2007
+# ActiveState Software Inc. All Rights Reserved.
+# 
+# Contributor(s):
+#   ActiveState Software Inc
+# 
+# Alternatively, the contents of this file may be used under the terms of
+# either the GNU General Public License Version 2 or later (the "GPL"), or
+# the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+# in which case the provisions of the GPL or the LGPL are applicable instead
+# of those above. If you wish to allow use of your version of this file only
+# under the terms of either the GPL or the LGPL, and not to allow others to
+# use your version of this file under the terms of the MPL, indicate your
+# decision by deleting the provisions above and replace them with the notice
+# and other provisions required by the GPL or the LGPL. If you do not delete
+# the provisions above, a recipient may use your version of this file under
+# the terms of any one of the MPL, the GPL or the LGPL.
+# 
+# ***** END LICENSE BLOCK *****
+
+
+Import(
+    'cons',
+    'build',
+    'platform',
+    'productType',
+    'buildFlavour',
+    'buildType',
+    'unsiloedPythonExe',
+    'ranRegxpcomStateFileName',
+    'mozComponentsDir',
+    'mozIdlIncludePath',
+    'idlExportDir',
+    'supportDir',
+    'komodoPythonUtilsDir',
+    'mozVersion',
+    'sdkDir',
+    'mozSrc',
+);
+
+$cons->InstallPythonUtility('styles.py');
+$cons->Preprocess('factoryStyleSettings.p.py',
+                  'factoryStyleSettings.py');
+$cons->InstallPythonUtility('factoryStyleSettings.py');
+$cons->InstallPythonUtility('schemebase.py');
+$cons->InstallPythonUtility('userStyleSettings.py');
+$cons->Install($idlExportDir, 'koIScintillaSchemeService.idl');
+$cons->BuildAndInstallXpt('koIScintillaSchemeService.idl');
+$cons->Preprocess('koScintillaSchemeService.p.py',
+                  'koScintillaSchemeService.py');
+$cons->InstallXpcomComponent('koScintillaSchemeService.py');
+
+# TODO: Rename these so they are using the same name - so we can use
+#       $cons->InstallRecursive() to install all of them.
+
+$cons->InstallAs("$supportDir/schemes/3024.ksf", 'color_schemes/3024.ksf');
+$cons->InstallAs("$supportDir/schemes/Ashes_Dark.ksf", 'color_schemes/ashes-dark.ksf');
+$cons->InstallAs("$supportDir/schemes/Ashes_Light.ksf", 'color_schemes/ashes-light.ksf');
+$cons->InstallAs("$supportDir/schemes/Atelierdune_Dark.ksf", 'color_schemes/atelierdune-dark.ksf');
+$cons->InstallAs("$supportDir/schemes/Atelierdune_Light.ksf", 'color_schemes/atelierdune-light.ksf');
+$cons->InstallAs("$supportDir/schemes/Atelierforest_Dark.ksf", 'color_schemes/atelierforest-dark.ksf');
+$cons->InstallAs("$supportDir/schemes/Atelierforest_Light.ksf", 'color_schemes/atelierforest-light.ksf');
+$cons->InstallAs("$supportDir/schemes/Atelierheath_Dark.ksf", 'color_schemes/atelierheath-dark.ksf');
+$cons->InstallAs("$supportDir/schemes/Atelierheath_Light.ksf", 'color_schemes/atelierheath-light.ksf');
+$cons->InstallAs("$supportDir/schemes/Bespin.ksf", 'color_schemes/bespin.ksf');
+$cons->InstallAs("$supportDir/schemes/Chalk_Dark.ksf", 'color_schemes/chalk-dark.ksf');
+$cons->InstallAs("$supportDir/schemes/Chalk_Light.ksf", 'color_schemes/chalk-light.ksf');
+$cons->InstallAs("$supportDir/schemes/Base16_Dark.ksf", 'color_schemes/default-dark.ksf');
+$cons->InstallAs("$supportDir/schemes/Base16_Light.ksf", 'color_schemes/default-light.ksf');
+$cons->InstallAs("$supportDir/schemes/Eighties_Dark.ksf", 'color_schemes/eighties-dark.ksf');
+$cons->InstallAs("$supportDir/schemes/Eighties_Light.ksf", 'color_schemes/eighties-light.ksf');
+$cons->InstallAs("$supportDir/schemes/Embers_Dark.ksf", 'color_schemes/embers-dark.ksf');
+$cons->InstallAs("$supportDir/schemes/Embers_Light.ksf", 'color_schemes/embers-light.ksf');
+$cons->InstallAs("$supportDir/schemes/Grayscale_Dark.ksf", 'color_schemes/grayscale-dark.ksf');
+$cons->InstallAs("$supportDir/schemes/Grayscale_Light.ksf", 'color_schemes/grayscale-light.ksf');
+$cons->InstallAs("$supportDir/schemes/Greenscreen.ksf", 'color_schemes/greenscreen.ksf');
+$cons->InstallAs("$supportDir/schemes/Isotope_Dark.ksf", 'color_schemes/isotope-dark.ksf');
+$cons->InstallAs("$supportDir/schemes/Isotope_Light.ksf", 'color_schemes/isotope-light.ksf');
+$cons->InstallAs("$supportDir/schemes/Londontube_Dark.ksf", 'color_schemes/londontube-dark.ksf');
+$cons->InstallAs("$supportDir/schemes/Londontube_Light.ksf", 'color_schemes/londontube-light.ksf');
+$cons->InstallAs("$supportDir/schemes/Marrakesh.ksf", 'color_schemes/marrakesh.ksf');
+$cons->InstallAs("$supportDir/schemes/Mocha_Dark.ksf", 'color_schemes/mocha-dark.ksf');
+$cons->InstallAs("$supportDir/schemes/Mocha_Light.ksf", 'color_schemes/mocha-light.ksf');
+$cons->InstallAs("$supportDir/schemes/Monokai_Dark.ksf", 'color_schemes/monokai-dark.ksf');
+$cons->InstallAs("$supportDir/schemes/Monokai_Light.ksf", 'color_schemes/monokai-light.ksf');
+$cons->InstallAs("$supportDir/schemes/Ocean_Dark.ksf", 'color_schemes/ocean-dark.ksf');
+$cons->InstallAs("$supportDir/schemes/Ocean_Light.ksf", 'color_schemes/ocean-light.ksf');
+$cons->InstallAs("$supportDir/schemes/Paraiso.ksf", 'color_schemes/paraiso.ksf');
+$cons->InstallAs("$supportDir/schemes/Railscasts_Dark.ksf", 'color_schemes/railscasts-dark.ksf');
+$cons->InstallAs("$supportDir/schemes/Railscasts_Light.ksf", 'color_schemes/railscasts-light.ksf');
+$cons->InstallAs("$supportDir/schemes/Solarized_Dark.ksf", 'color_schemes/solarized-dark.ksf');
+$cons->InstallAs("$supportDir/schemes/Solarized_Light.ksf", 'color_schemes/solarized-light.ksf');
+$cons->InstallAs("$supportDir/schemes/Tomorrow_Dark.ksf", 'color_schemes/tomorrow-dark.ksf');
+$cons->InstallAs("$supportDir/schemes/Tomorrow_Light.ksf", 'color_schemes/tomorrow-light.ksf');
+$cons->InstallAs("$supportDir/schemes/Twilight_Dark.ksf", 'color_schemes/twilight-dark.ksf');
+$cons->InstallAs("$supportDir/schemes/Twilight_Light.ksf", 'color_schemes/twilight-light.ksf');
+
+$cons->InstallRecursive("$supportDir/schemes/schemes", cwd()."/src/schemes/color_schemes/schemes", ('\.consign'));
+$cons->InstallRecursive("$supportDir/schemes/templates", cwd()."/src/schemes/color_schemes/templates", ('\.consign', 'common.p.py'));
+$cons->PreprocessAndInstallAs("$supportDir/schemes/templates/common.py", "color_schemes/templates/common.p.py");
+
+$cons->BuildAndInstallXpt('koIKeybindingSchemeService.idl');
+$cons->InstallXpcomComponent('koKeybindingSchemeService.py');
+if ($platform eq "darwin") {
+    $cons->Preprocess('Default.p.kkf', 'Windows.kkf');
+    $cons->Install("$supportDir/schemes", 'Windows.kkf');
+    $cons->Preprocess('Mac.p.kkf', 'Default.kkf');
+    $cons->Install("$supportDir/schemes", 'Default.kkf');
+} else {
+    $cons->Preprocess('Default.p.kkf', 'Default.kkf');
+    $cons->Install("$supportDir/schemes", 'Default.kkf');
+}
+$cons->Preprocess('Emacs.p.kkf', 'Emacs.kkf');
+$cons->Install("$supportDir/schemes", 'Emacs.kkf');
+
+$cons->BuildAndInstallXpt('koIViCommandDetail.idl');
+$cons->InstallXpcomComponent('koViCommandDetail.py');
+
+$cons->Preprocess("_vi.p.kkf", "_vi.kkf");
+$cons->Install("$supportDir/schemes", '_vi.kkf');
+$cons->Depends("_vi.kkf", "Default.kkf");
+
+$cons->Preprocess("Vi.p.kkf", "Vi.kkf");
+$cons->Install("$supportDir/schemes", 'Vi.kkf');
+$cons->Depends("Vi.kkf", "_vi.kkf");

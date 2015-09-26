@@ -1,0 +1,666 @@
+@import url("chrome://komodo/skin/_config/window.less");
+
+window, page, dialog, wizard, wizardpage, prefwindow
+{
+    -moz-appearance: @window-appearance;
+    background: @window-background;
+    color: @window-color;
+}
+
+label#desc, label.desc, description, label.wizard-header-label
+{
+    color: @window-color;
+}
+
+.inset {
+    border: @inset-border;
+}
+
+.outset {
+    border: @outset-border;
+}
+
+/* Splitter */
+
+splitter
+{
+    -moz-appearance: @splitter-appearance;
+    background-color: @splitter-background-color;
+    background-image: @splitter-background-image;
+    border: @splitter-border;
+
+    min-width: 3px;
+    min-height: 3px;
+
+    grippy
+    {
+        visibility: @splitter-grippy-visibility;
+    }
+}
+
+/* "workspace_splitter": A splitter used between main panes in the
+ * Komodo window.
+ */
+
+splitter.workspace_splitter
+{
+    &[orient="vertical"]
+    {
+        -moz-appearance: none;
+        min-height: 3px;
+        border: none;
+        z-index: 100;
+        position: relative;
+        background: transparent;
+        margin-bottom: -2px;
+        border-top: @main-border;
+
+        &:-moz-window-inactive
+        {
+            border-top: @main-border-inactive;
+        }
+    }
+
+    &[orient="horizontal"]
+    {
+        -moz-appearance: none;
+        min-width: 3px;
+        border: none;
+
+        &:not(.workspace_splitter_right)
+        {
+            min-width: 3px;
+            width: 3px;
+            z-index: 100;
+            position: relative;
+            margin-left: -2px;
+
+            background: transparent;
+            border-right: @panel-border;
+        }
+
+        &.workspace_splitter_right
+        {
+            min-width: 3px;
+            width: 3px;
+            z-index: 100;
+            position: relative;
+            margin-right: -2px;
+
+            background: transparent;
+            border-left: @panel-border;
+        }
+    }
+}
+
+/* Separators */
+
+separator.groovy-thin,
+separator.groove
+{
+    border-width: @separator-border-width !important;
+    border-style: @separator-border-style !important;
+    border-color: @separator-border-color !important;
+}
+
+/* Main Window */
+
+.blank-workspace
+{
+    background: @workspace-background !important;
+}
+
+/* Buttons */
+
+button.show-icon
+{
+    .button-icon
+    {
+        display: block !important;
+    }
+}
+
+button:not(.button-toolbar-a):not(.button-toolbar-b):not(.button-toolbar-c):not(.button-toolbar-d):not(.button-link):not(.button-plain):not([type="menu"]),
+:not(toolbarbutton):not(toolbaritem) > toolbarbutton
+{
+    -moz-appearance: @button-appearance;
+    background: @button-background;
+    color: @button-color;
+    border: @button-border;
+    text-shadow: @button-text-shadow;
+    border-radius: @button-border-radius;
+
+    &[disabled="true"]
+    {
+        color: @button-color-disabled;
+    }
+}
+
+/* Embedded buttons - buttons that do not look like buttons unless interacted with */
+
+button:-moz-any(.button-toolbar-a, .button-toolbar-b, .button-toolbar-c, .button-toolbar-d, .button-plain),
+:not(toolbarbutton):not(toolbaritem) > toolbarbutton
+{
+    &:-moz-any(button)
+    {
+        -moz-appearance: @button-appearance;
+    }
+
+    &:-moz-any(toolbarbutton)
+    {
+        -moz-appearance: @toolbarbutton-appearance;
+    }
+
+    background: @button-embedded-background;
+    color: @button-embedded-color;
+    border: @button-embedded-border;
+    text-shadow: @button-embedded-text-shadow;
+    border-radius: @button-border-radius;
+
+    &[disabled="true"]
+    {
+        color: @button-embedded-color-disabled;
+    }
+}
+
+/* Button States */
+button:not([disabled="true"]):not(.button-link):not([type="menu"]),
+:not(toolbarbutton):not(toolbaritem) > toolbarbutton:not([disabled="true"])
+{
+    border-radius: @button-border-radius;
+
+    .button-internal-box
+    {
+        border: @button-internal-border;
+    }
+
+    &:-moz-any(button)
+    {
+        -moz-appearance: @button-appearance;
+    }
+
+    &:-moz-any(toolbarbutton)
+    {
+        -moz-appearance: @toolbarbutton-appearance;
+    }
+
+    &:hover
+    {
+        background: @button-background-hover !important;
+        color: @button-color-hover !important;
+        border: @button-border-hover;
+        text-shadow: @button-text-shadow-hover !important;
+
+        .button-internal-box
+        {
+            border: @button-internal-border-hover;
+        }
+    }
+
+    &:active
+    {
+        background: @button-background-active !important;
+        color: @button-color-active !important;
+        border: @button-border-active;
+        text-shadow: @button-text-shadow-active !important;
+    }
+}
+
+/* Buttons with forced icons */
+button.with-icon .button-icon
+{
+    display: block !important;
+    margin-right: 5px;
+}
+
+/* Textbox & Menu Elements */
+:-moz-any(textbox, menulist, button[type="menu"]):not(.plain)
+{
+    background-color: @textbox-background;
+    color: @textbox-color;
+    box-shadow: @textbox-box-shadow;
+
+    border: @textbox-border;
+    border-radius: @textbox-border-radius;
+    
+    &[disabled="true"]
+    {
+        background-color: @textbox-background-disabled;
+        color: @textbox-color-disabled;
+        border: @textbox-border-disabled;
+    }
+
+    &[type="autocomplete"][disabled="true"] > hbox
+    {
+        background-color: @textbox-background-disabled;
+    }
+
+    &:-moz-any(textbox)
+    {
+        -moz-appearance: @textbox-appearance;
+        &[enablehistory=true] > .autocomplete-textbox-container
+        {
+            /* Override the -moz-appearance set on autocomplete textboxes. */
+            -moz-appearance: @textbox-appearance;
+        }
+    }
+
+    &:-moz-any(menulist, button[type="menu"])
+    {
+        -moz-appearance: @menulist-appearance;
+        min-height: 20px;
+        min-width: 40px;
+        
+        .menulist-editable-box
+        {
+            -moz-appearance: @menulist-editable-box-appearance;
+        }
+    }
+
+    &:-moz-any(menulist, textbox[type="autocomplete"])
+    {
+        dropmarker
+        {
+            -moz-appearance: @menulist-dropmarker-appearance;
+            background: @menulist-dropmarker-background;
+            border: @menulist-dropmarker-border;
+            display: @menulist-dropmarker-display;
+        }
+    }
+}
+
+.menulist-editable-input
+{
+    color: @textbox-color;
+}
+
+/* Statusbar */
+
+statusbar
+{
+    .statusbar-resizerpanel
+    {
+        visibility: collapse;
+    }
+}
+
+/* Statusbar Buttons */
+
+statusbar:not(.bottombar) button:not([type="menu"]),
+statusbar:not(.bottombar) toolbarbutton:not(.breadcrumb)
+{
+    -moz-appearance: @statusbar-button-appearance;
+    background: @statusbar-button-background;
+    color: @statusbar-button-color;
+    border: @statusbar-button-border !important;
+
+    margin: 0;
+    padding: 0 2px !important;
+    border-radius: 4px;
+
+    &:hover
+    {
+        background: @statusbar-button-background-hover;
+        color: @statusbar-button-color-hover;
+        border: @statusbar-button-border-hover !important;
+    }
+}
+
+textbox.plain
+{
+    color: @textbox-color;
+}
+
+/* Checkboxes */
+
+checkbox
+{
+    -moz-appearance: @checkbox-appearance;
+    color: @checkbox-color;
+
+    .checkbox-spacer-box
+    {
+        -moz-appearance: @checkbox-check-spacer-appearance;
+        border: @checkbox-check-spacer-border;
+        background: @checkbox-check-spacer-background;
+    }
+
+    .checkbox-check
+    {
+        width: 16px;
+        height: 16px;
+
+        border: @checkbox-check-border;
+        background: @checkbox-check-background !important;
+        
+        &[checked="true"]
+        {
+            background: @checkbox-check-background-checked !important;
+        }
+    }
+
+    .checkbox-label-box
+    {
+        -moz-appearance: @checkbox-label-box-appearance;
+    }
+
+    &[disabled="true"]
+    {
+        opacity: @checkbox-disabled-opacity;
+    }
+
+    &:hover
+    {
+        background: @checkbox-background-hover;
+    }
+}
+
+/* Radioboxes */
+
+radio
+{
+    -moz-appearance: @radio-appearance;
+    color: @radio-color;
+
+    .radio-spacer-box
+    {
+        -moz-appearance: @radio-check-appearance;
+
+        width: 16px;
+        height: 16px;
+
+        border: @radio-check-border;
+        background: @radio-check-background;
+
+        .radio-check-box1
+        {
+            visibility: @radio-check-image-visibility;
+        }
+    }
+
+    .radio-label-box
+    {
+        -moz-appearance: @radio-label-box-appearance;
+    }
+
+    &[selected="true"] .radio-spacer-box
+    {
+        background: @radio-check-background-selected;
+    }
+
+    &[disabled="true"]
+    {
+        opacity: @radio-disabled-opacity;
+    }
+
+    &:hover
+    {
+        background: @radio-background-hover;
+    }
+}
+
+/* Statusbar */
+
+statusbar
+{
+    -moz-appearance: @statusbar-appearance !important;
+    background: @statusbar-background;
+    padding: 0 !important;
+    font-family: @statusbar-font;
+    font-size: @statusbar-font-size;
+    color: @statusbar-text-color;
+    border: 0 !important;
+
+    & > statusbarpanel
+    {
+        -moz-appearance: none;
+        background: transparent;
+        padding: 2px;
+        .border(@statusbar-border-width, @statusbar-border-style, @statusbar-border-color);
+        -moz-border-image: @statusbar-panel-border-image;
+
+        &:last-child, &#statusbar-line-col
+        {
+            border-right: 0;
+        }
+    }
+}
+
+/* Tree Elements */
+
+.list-styling()
+{
+    ._self(@name)
+    {
+        -moz-appearance: ~"@{list-@{name}-appearance}" !important;
+        background: ~"@{list-@{name}-background}" !important;
+        border: ~"@{list-@{name}-border}";
+    }
+
+    ._header-styling(@name)
+    {
+        -moz-appearance: ~"@{list-@{name}-header-appearance}";
+        background: ~"@{list-@{name}-header-background}" !important;
+        padding: 2px;
+        color: ~"@{list-@{name}-header-color}";
+        border: 0;
+        border-width: ~"@{list-@{name}-header-border-width}";
+        border-style: ~"@{list-@{name}-header-border-style}";
+        border-color: ~"@{list-@{name}-header-border-color}";
+    }
+
+    ._list-item-styling(@name)
+    {
+        color: ~"@{list-@{name}-item-color}";
+        background: ~"@{list-@{name}-row-background}";
+        border: 0;
+
+        &[selected="true"]
+        {
+            color: ~"@{list-@{name}-item-color-selected}";
+            background: ~"@{list-@{name}-row-background-selected}";
+        }
+
+        &[selected="true"]:focus
+        {
+            color: ~"@{list-@{name}-item-color-focus}";
+            background: ~"@{list-@{name}-row-background-focus}";
+        }
+    }
+
+    ._tree-item-styling(@name)
+    {
+        color: ~"@{list-@{name}-item-color}";
+
+        &(selected)
+        {
+            color: ~"@{list-@{name}-item-color-selected}" !important;
+        }
+
+        &(selected, focus)
+        {
+            color: ~"@{list-@{name}-item-color-focus}" !important;
+        }
+    }
+
+    ._tree-item-wrap-styling(@name)
+    {
+        background: ~"@{list-@{name}-row-background}";
+        border: 0;
+
+        &(multicol, odd)
+        {
+            background: ~"@{list-@{name}-row-background-odd}";
+        }
+
+
+        &(selected)
+        {
+            background: ~"@{list-@{name}-row-background-selected}";
+        }
+
+        &(selected, focus)
+        {
+            background: ~"@{list-@{name}-row-background-focus}";
+        }
+    }
+
+    .tree(@name)
+    {
+        .list-styling._self(@name);
+
+        treecol:not([hideheader]), treecolpicker { .list-styling._header-styling(@name) }
+        treechildren::-moz-tree-cell-text { .list-styling._tree-item-styling(@name); }
+        treechildren::-moz-tree-row { .list-styling._tree-item-wrap-styling(@name); }
+    }
+
+    .listbox(@name)
+    {
+        .list-styling._self(@name);
+
+        listheader { .list-styling._header-styling(@name); }
+        listitem { .list-styling._list-item-styling(@name); }
+    }
+
+    .richlistbox(@name)
+    {
+        .list-styling._self(@name);
+
+        listheader { .list-styling._header-styling(@name); }
+        richlistitem, notification { .list-styling._list-item-styling(@name); }
+    }
+
+}
+
+tree { .list-styling.tree(tree); }
+listbox { .list-styling.listbox(listbox); }
+richlistbox { .list-styling.richlistbox(listbox); }
+
+/* Pref Window */
+
+.pref-window:not(dialog):not(#prefWindow):not(#prefProjectsWindow)
+{
+    background: transparent;
+    -moz-appearance: none;
+    
+    /* Cannot set padding on window element as it screws up scrollbar positioning */
+    & > vbox, & > hbox, & > box
+    {
+        padding: 10px;
+    }
+}
+
+#prefWindow #panelFrame,
+#prefProjectsWindow #panelFrame
+{
+    margin-top: 2px;
+    -moz-appearance: @list-listbox-appearance !important;
+    background: @list-listbox-background !important;
+    border: @list-listbox-border;
+}
+
+#pref-deck-vbox + splitter
+{
+    -moz-appearance: none !important;
+    border: 0;
+    background: transparent;
+}
+
+/* Unified Menu */
+
+#unifiedMenuPrimaryPane, #unifiedMenuSecondaryPane
+{
+    min-width: 200px;
+}
+
+#unifiedMenuPrimaryPane
+{
+    border-right: @panel-border;
+}
+
+/* Groupboxes */
+
+groupbox
+{
+    -moz-appearance: @groupbox-appearance;
+    border: @groupbox-border;
+}
+
+caption
+{
+    font-weight: @caption-font-weight;
+    background: @caption-background;
+}
+
+/* Tooltips */
+tooltip
+{
+    -moz-appearance: @tooltip-appearance;
+    background: @tooltip-background;
+    border: @tooltip-border;
+    color: @tooltip-color;
+
+    description
+    {
+        color: @tooltip-color;
+    }
+}
+
+/* Wizards */
+
+wizard
+{
+
+    wizardpage,
+    .wizard-header
+    {
+        background: @window-background;
+        border-bottom: @wizard-header-border;
+        color: @window-color;
+    }
+
+    .wizard-header
+    {
+        -moz-appearance: @wizard-header-appearance;
+    }
+
+    .wizard-buttons
+    {
+        -moz-appearance: @wizard-buttons-appearance;
+        background: @bottom-background;
+        border-top: @wizard-buttons-border;
+    }
+
+}
+
+/* Alerts */
+
+.alertBox
+{
+    background: @alertbox-background !important;
+    border: @alertbox-border !important;
+}
+
+.alertImageBox
+{
+    background: @alertbox-image-background !important;
+    border: @alertbox-image-border !important;
+}
+
+.alertTextBox, .alertCloseBox
+{
+    background: @alertbox-text-background !important;
+}
+
+/* Find bar */
+ko-findbar
+{
+    background: @window-background;
+    border-top: @main-border;
+}
+
+/* Misc */
+sidebarheader
+{
+    background: @window-background;
+}

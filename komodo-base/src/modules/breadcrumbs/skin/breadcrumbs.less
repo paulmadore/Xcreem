@@ -1,0 +1,101 @@
+@import url("chrome://komodo/skin/_config/window.less");
+
+#breadcrumbBar
+{
+    overflow: hidden;
+    -moz-appearance: none;
+    background: transparent;
+    margin: 0;
+    padding: 0;
+    border: 0;
+
+    .breadcrumb
+    {
+        -moz-binding: url("chrome://breadcrumbs/content/bindings/toolbarbutton.xml#toolbarbutton");
+        position: relative;
+        padding: 0 !important;
+        margin-left: 0 !important;
+        
+        &:empty
+        {
+            visibility: visible;
+        }
+        
+        &.overflown
+        {
+            visibility: collapse;
+        }
+
+        &.first-child
+        {
+            margin-left: 6px !important;
+        }
+
+        .toolbarbutton-text
+        {
+            color: @statusbar-text-color;
+            font-family: @statusbar-font;
+            font-size: @statusbar-font-size;
+            padding: 0;
+        }
+        
+        .file-scc,
+        .toolbarbutton-icon
+        {
+            visibility: collapse;
+            /*margin-right: 4px !important;*/
+        }
+        
+        .breadcrumb-arrow
+        {
+            visibility: collapse;
+            //background-image: @icon-breadcrumb-arrow;
+            //background-size: 16px;
+            //margin-right: -16px;
+            //width: 16px;
+            //max-width: 16px;
+            //height: 16px;
+            //opacity: 0.6;
+        }
+    }
+
+    menuitem, menu
+    {
+        .menu-iconic-left
+        {
+            visibility: visible; /* Override OS preference */
+        }
+
+        .menu-accel
+        {
+            opacity: 0.6;
+        }
+    }
+
+    &.is-remote
+    {
+        menuitem[anonid="findInFolder"],
+        menuitem[anonid="fastOpenHere"],
+        menuitem[anonid="showInPlaces"]
+        {
+            visibility: collapse;
+        }
+    }
+
+    #breadcrumbOverflowBtn
+    {
+        dropmarker
+        {
+            visibility: collapse;
+        }
+
+        menuitem
+        {
+            .menu-iconic-left
+            {
+                visibility: visible; /* Override OS preference */
+            }
+        }
+    }
+}
+

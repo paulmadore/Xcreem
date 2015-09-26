@@ -1,0 +1,58 @@
+/**
+ * CSS style rules specific to find2.xul (the find dialog)
+ */
+
+#pin-btn {
+    list-style-image: url(chrome://fugue/skin/icons/pin-small.png);
+    margin: 0 4px 4px 0;
+}
+#pin-btn[checked] {
+    list-style-image: url(chrome://fugue/skin/icons/pin.png);
+    -moz-appearance: toolbarbutton;
+}
+
+#pin-btn > label {
+    display: none;
+}
+
+/* Todo: Remove this custom styling globally */
+.rightarrow-button,
+.button-toolbar-a {
+    -moz-appearance: button;
+}
+
+.button-toolbar-a > .button-internal-box {
+    border: 0 !important;
+}
+
+#find-box-wrap > hbox > label,
+#find-box-wrap > hbox > spacer
+{
+    width: 4.5em;
+}
+
+#find-box-wrap > hbox > spacer
+{
+    margin: 0 6px;
+}
+
+.buttons > *
+{
+    width: 85px;
+}
+
+spacer.button-spacer {
+    width: 96px; /* Add margin of label above */
+}
+
+window:not(.mode-replace) #repl-row {
+    visibility: collapse;
+}
+
+.collapsed {
+    visibility: collapse;
+}
+
+#msg-deck {
+    max-width: 600px;
+}

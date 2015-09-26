@@ -1,0 +1,229 @@
+/* Copyright (c) 2010-2011 ActiveState Software Inc. .
+   See the file LICENSE.txt for licensing information. */
+
+@import url("chrome://komodo/skin/_config/editor.less");
+
+.hud
+{
+    -moz-appearance: none;
+    background: @hud-background;
+    background-image: @hud-background-image;
+    color: @hud-foreground;
+    border: @hud-border;
+    border-radius: @hud-border-radius;
+    box-shadow: @hud-shadow;
+
+    .docked
+    {
+        background: @hud-dock-color;
+    }
+
+    .special
+    {
+        background: @hud-special-color;
+    }
+
+    richlistbox,
+    listbox
+    {
+        -moz-appearance: none;
+        background: transparent !important;
+    }
+
+    richlistitem,
+    listitem,
+    row
+    {
+        -moz-appearance: none !important;
+        background-color: transparent;
+        color: @hud-foreground;
+        border: @hud-item-border;
+
+        &[selected="true"]
+        {
+            background-color: @hud-selection-background;
+            color: @hud-selection-foreground;
+            border: @hud-selected-border;
+        }
+
+        &[focused]:not([selected])
+        {
+            border: @hud-focused-border;
+        }
+    }
+
+    textbox,
+    menulist
+    {
+        -moz-appearance: none !important;
+        background-color: @hud-selection-background !important;
+        color: @hud-selection-foreground;
+        border: 0;
+
+        & > hbox
+        {
+            -moz-appearance: none !important;
+            background-color: transparent !important;
+        }
+    }
+
+    :not(button) > button:not(.button-plain),
+    & > button:not(.button-plain)
+    {
+        -moz-appearance: none !important;
+        background: @hud-dock-color;
+        color: @hud-foreground;
+        border: 0;
+        border-radius: 2px;
+        padding: 2px 4px;
+
+        &:hover
+        {
+            background-color: darken(@hud-dock-color, 20%);
+        }
+    }
+    
+    toolbarbutton
+    {
+        -moz-appearance: none !important;
+        opacity: 0.8;
+        margin: auto 4px;
+        
+        &:hover
+        {
+            opacity: 1.0;
+        }
+    }
+
+    button > button
+    {
+        -moz-appearance: none;
+        background: transparent;
+        border: 0;
+        padding: 0;
+        margin: 0;
+    }
+
+    .button-menubutton-dropmarker
+    {
+        -moz-appearance: none !important;
+    }
+    
+    dropmarker
+    {
+        -moz-appearance: none !important;
+    }
+
+}
+
+/* Main Editor */
+
+#komodo_main:not(.toolbox-hidden) #komodo-editor-vbox
+{
+    /* Set the border exclusively on the pane, as setting it on the toolbox
+       creates an awkward fuzzy effect when using dark color shchemes */
+    border-top: @main-toolbox-border-bottom;
+}
+
+/* Findbar */
+
+ko-findbar.hud,
+#find2-window.hud
+{
+    border-width: 1px 0 0 0 !important;
+}
+
+ko-findbar.hud
+{
+    toolbarbutton
+    {
+        width: 32px !important;
+    }
+}
+
+/* Autocompletions */
+
+scintilla[anonid="scintilla"] > panel[anonid="autocompletepopup"]
+{
+    border-radius: 2px;
+
+    & > hbox > grid
+    {
+        -moz-user-focus: normal;
+    }
+
+    .ko-autocomplete-item
+    {
+        -moz-box-align: center;
+        /* The default font; if possible, the item construction code will use the
+         * scintilla default style font instead.
+         */
+
+        font-family: @editor-autocomplete-item-font;
+        font-size: @editor-autocomplete-item-font-size;
+        border: 1px solid rgba(0,0,0,0);
+        border-radius: 2px;
+        padding: 2px;
+
+        &[focused]:not([selected])
+        {
+            border: 0;
+            border-top: 1px;
+            border-bottom: 1px;
+            border-style: dotted;
+        }
+
+        & > [column-type="image"]
+        {
+            min-width: 18px;
+            -moz-box-pack: center;
+            -moz-box-align: center;
+        }
+
+        & > [column-type="text"] text-wrapper
+        {
+            /* this is needed to make cropping work correctly */
+            display: block;
+
+            & > description
+            {
+                display: block;
+                overflow: hidden;
+                white-space: nowrap;
+                /* Normally the margins are thicker on the bottom than the top. Try to make
+                 * things look vaguely more centered here.
+                 */
+                margin-top: 3px;
+                margin-bottom: 2px;
+            }
+        }
+    }
+}
+
+/* Dialogs */
+
+#dialog-prompt.hud
+{
+    separator,
+    .dialog-button[icon="cancel"],
+    .dialog-button[icon="accept"],
+    textbox dropmarker
+    {
+        visibility: collapse;
+    }
+}
+
+.hud.shell-output
+{
+    label
+    {
+        opacity: 0.6;
+    }
+    
+    textbox
+    {
+        background: transparent !important;
+        font-family: monospace;
+        font-size: 0.9rem;
+    }
+}

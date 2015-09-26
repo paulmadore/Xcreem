@@ -1,0 +1,367 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay PUBLIC "-//MOZILLA//DTD XUL V1.0//EN" "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" [
+  <!ENTITY % komodoDTD SYSTEM "chrome://komodo/locale/komodo.dtd">
+  %komodoDTD;
+]>
+<?xml-stylesheet href="chrome://komodo/skin/global/global.css" type="text/css"?>
+<?xml-stylesheet href="chrome://komodo/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://komodo/skin/bindings/sidebar.css" type="text/css"?>
+<?xml-stylesheet href="chrome://komodo/skin/tabs/tabs.css" type="text/css"?>
+<?xml-stylesheet href="chrome://komodo/skin/toolbar.css" type="text/css"?>
+
+<page xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <vbox flex="1" id="toolbox2-hierarchy-vbox">
+        <!-- #if 1 -->
+        <hbox id="toolbox2-hierarchy-toolbar-a" >
+            <!-- the cog -->
+            <textbox id="toolbox2-filter-textbox"
+                       style="min-width:40px;"
+                       flex="1"
+                       type="search"
+                       timeout="500"
+                       onfocus="this.select();"
+                       onkeypress="ko.toolbox2.onFilterKeypress(event)"
+                       oncommand="ko.toolbox2.updateFilter()"
+                       tooltiptext="&findFilter.tooltiptext;"/>
+            <toolbarbutton    id="toolbox2_tools-a"
+                    tooltiptext="&tools.label;"
+                    buttonstyle="pictures"
+                    orient="horizontal"
+                    type="menu"
+                    class="rightarrow-button-a project-tools-icon">
+                <menupopup id="toolbox2-cog-popup"
+                           class="has-iconic-menuitems">
+                    <menuitem id="toolbox2-cog_sortNatural"
+                              label="&sortNatural.label;"
+                              type="radio"
+                              name="toolbox2-sort-type"
+                              accesskey="&sortNatural.accesskey;"
+                              oncommand="ko.toolbox2.sortRows('natural')"
+                              />
+                    <menuitem id="toolbox2-cog_sortAscending"
+                              label="&sortAscending.label;"
+                              type="radio"
+                              name="toolbox2-sort-type"
+                              accesskey="&sortAscending.accesskey;"
+                              oncommand="ko.toolbox2.sortRows('ascending')"
+                              />
+                    <menuitem id="toolbox2-cog_sortDescending"
+                              label="&sortDescending.label;"
+                              type="radio"
+                              name="toolbox2-sort-type"
+                              accesskey="&sortDescending.accesskey;"
+                              oncommand="ko.toolbox2.sortRows('descending')"
+                              />
+                    <menuseparator id="toolbox2-cog_separator-1" />
+                    <!-- put items for inserting here -->
+                </menupopup>
+            </toolbarbutton>
+        </hbox >
+        <!-- #endif -->
+        <tree flex="1"
+              id="toolbox2-hierarchy-tree"
+              class="bg_transparent"
+              ondblclick="ko.toolbox2.onDblClick(event);"
+              onclick="ko.toolbox2.onTreeClick(event);"
+              seltype="multiple"
+              hidecolumnpicker="true"
+              context="toolbox2Context">
+           <treecols>
+               <treecol primary="true"
+                        id="toolbox2-hierarchy-tree-name"
+                        flex="1"
+                        persist="width"
+                        hideheader="true"
+                        crop="center"/>
+           </treecols>
+           <treechildren id="toolbox2-hierarchy-treebody" flex="1"
+                         ondragstart="ko.toolbox2.doStartDrag(event, this);"
+                         ondrop="return ko.toolbox2.doDrop(event, this);"
+                         ondragover="return ko.toolbox2.doDragDefault(event);"
+                         />
+        </tree>
+    </vbox>
+
+    <popupset id="toolbox-popupset">
+        <menupopup id="toolbox2Context" onpopupshowing="ko.toolbox2.updateContextMenu(event, this);"
+                   class="has-iconic-menuitems">
+          <!-- "standardToolbox" denotes that the user clicked on the empty region,
+               like "project" in the places toolbox.
+               -->
+            <menu id="tb2ContextMenu_addMenu" label="&add.label;"
+                  hideUnless="folder menu toolbar standardToolbox" 
+                  testHideIf="t:multipleSelection" >
+                <menupopup id="tb2ContextMenu_addPopupMenu">
+                  <!-- Don't use CSS on the IDs because this menu gets
+                       copied with slightly different IDs, and classes are overkill.
+                      -->
+                    <menuitem id="tb2_addContext_newMacro"
+                              label="&newMacro.label;"
+                              class="menuitem-iconic"
+                              accesskey="&folderContextNewMacro.accesskey;"
+                              image="chrome://komodo/skin/images/toolbox/macro.svg"
+                              oncommand="ko.toolbox2.addToolboxItem('macro')"
+                              />
+                    <menuitem id="tb2_addContext_newSnippet"
+                              label="&newSnippet.label;"
+                              class="menuitem-iconic"
+                              accesskey="&folderContextNewSnippet.accesskey;"
+                              image="chrome://komodo/skin/images/toolbox/snippet.svg"
+                              oncommand="ko.toolbox2.addToolboxItem('snippet')"
+                              />
+                    <menuitem id="tb2_addContext_newCommand"
+                              label="&newCommand.label;"
+                              class="menuitem-iconic"
+                              accesskey="&folderContextNewCommand.accesskey;"
+                              image="chrome://komodo/skin/images/toolbox/command.svg"
+                              oncommand="ko.toolbox2.addToolboxItem('command')"
+                              />
+                    <menuitem id="tb2_addContext_newURL"
+                              label="&newURL.label;"
+                              class="menuitem-iconic"
+                              accesskey="&folderContextNewURL.accesskey;"
+                              image="chrome://komodo/skin/images/toolbox/browser.svg"
+                              oncommand="ko.toolbox2.addToolboxItem('URL')"
+                              />
+                    <menuitem id="tb2_addContext_newTemplate"
+                              label="&newTemplate.label;"
+                              class="menuitem-iconic"
+                              accesskey="&folderContextNewTemplate.accesskey;"
+                              image="chrome://komodo/skin/images/toolbox/template.svg"
+                              oncommand="ko.toolbox2.addToolboxItem('template')"
+                              />
+                    <menuseparator anonid="addItemSeparator" />
+                    <menuitem id="tb2_addContext_newFolder"
+                              label="&newFolder.label;"
+                              accesskey="&folderContextNewFolder.accesskey;"
+                              class="menuitem-iconic"
+<!-- #if PLATFORM == "darwin" -->
+                                image="chrome://global/skin/dirListing/folder.png"
+<!-- #elif PLATFORM == "win" -->
+                                image="chrome://komodo/skin/images/folder-closed.png"
+<!-- #else -->
+                                image="moz-icon://stock/gtk-directory?size=16"
+<!-- #endif -->
+                              oncommand="ko.toolbox2.addToolboxItem('folder')"
+                              disableIfInMenu="toolbar menu"
+                              />
+                    <!-- #if PLATFORM != "darwin" -->
+                    <!-- TODO: Disable these two items if we're in a menu or toolbar -->
+                    <menuitem id="tb2_addContext_newMenu"
+                              label="&newCustomMenu.label;"
+                              class="menuitem-iconic"
+                              accesskey="&folderContextNewMenu.accesskey;"
+                              image="chrome://komodo/skin/images/toolbox/menu.svg"
+                              oncommand="ko.toolbox2.addToolboxItem('menu')"
+                              disableIfInMenu="toolbar menu"
+                              />
+                    <!-- #endif -->
+                    <menuitem id="tb2_addContext_newToolbar"
+                              label="&newCustomToolbar.label;"
+                              class="menuitem-iconic"
+                              accesskey="&folderContextNewToolbar.accesskey;"
+                              image="chrome://komodo/skin/images/toolbox/toolbar.svg"
+                              oncommand="ko.toolbox2.addToolboxItem('toolbar')"
+                              disableIfInMenu="toolbar menu"
+                              />
+                </menupopup>
+            </menu>
+            <menu id="tb2ContextMenu_importMenu" label="&importExport.label;"
+                  hideUnless="folder menu toolbar standardToolbox" 
+                  testDisableIf="t:multipleSelection" >
+              <menupopup id="tb2ContextMenu_importPopupMenu">
+                   <menuitem id="toolbox2ContextMenu_importFilesFromFileSystem"
+                             label="&importFilesFromFileSystem.label;"
+                             class="menuitem-iconic"
+                             oncommand="ko.toolbox2.importFilesFromFileSystem(event)"
+                             testDisableIf="t:multipleSelection"
+                             />
+                   <menuitem id="toolbox2ContextMenu_importFolderFromFileSystem"
+                             label="&importFolderFromFileSystem.label;"
+                             class="menuitem-iconic"
+                             oncommand="ko.toolbox2.importFolderFromFileSystem(event)"
+                             testDisableIf="t:multipleSelection"
+                             />
+                   <menuitem id="toolbox2ContextMenu_importPackage"
+                             label="&importPackage.label;"
+                             class="menuitem-iconic"
+                             oncommand="ko.toolbox2.importPackage(event)"
+                             testDisableIf="t:multipleSelection"
+                             />
+                   <menuitem id="toolbox2ContextMenu_importPackageFromWeb"
+                             label="&importPackageFromWeb.label;"
+                             class="menuitem-iconic"
+                             oncommand="ko.toolbox2.importPackageFromWeb(event)"
+                             testDisableIf="t:multipleSelection"
+                             />
+                   <menuseparator id="toolbox2ContextMenu_importExportSeparator" disableIfInMenu="standardToolbox" />
+                   <menuitem id="toolbox2ContextMenu_exportAsZipFile"
+                             keep_background="true"
+                             class="menuitem-iconic"
+                             label="&exportAsZipFile.label;"
+                             disableIfInMenu="standardToolbox"
+                             oncommand="ko.toolbox2.exportAsZipFile(event)"
+                             />
+                   <menuseparator id="toolbox2ContextMenu_packageSeparator"/>
+                   <menuitem id="toolbox2ContextMenu_installMacro"
+                             class="menuitem-iconic"
+                             label="&getMacro.label;"
+                             oncommand="require('scope-packages/packages').openCategory('macros')"
+                             />
+                   <menuitem id="toolbox2ContextMenu_installToolbox"
+                             class="menuitem-iconic"
+                             label="&getToolbox.label;"
+                             oncommand="require('scope-packages/packages').openCategory('toolbox')"
+                             />
+                   <menuitem id="toolbox2ContextMenu_browsePackages"
+                             class="menuitem-iconic"
+                             label="&browsePackages.label;"
+                             oncommand="ko.browse.browseTag('packages')"
+                             />
+                   <menuitem id="toolbox2ContextMenu_contribute"
+                             class="menuitem-iconic"
+                             label="&contributePackages.label;"
+                             oncommand="ko.browse.browseTag('contribute')"
+                             />
+              </menupopup>
+            </menu>
+            <menuitem id="toolbox2ContextMenu_executeMacro"
+                      label="&executeMacro.label;"
+                      class="menuitem-iconic primary_menu_item"
+                      oncommand="ko.toolbox2.invoke_executeMacro()"
+                      hideUnless="macro"
+                      testDisableIf="t:multipleSelection"
+                      />
+            <menuitem id="toolbox2ContextMenu_editMacro"
+                      label="&editMacro.label;"
+                      class="menuitem-iconic"
+                      oncommand="ko.toolbox2.invoke_editMacro()"
+                      hideUnless="macro"
+                      testDisableIf="t:multipleSelection"
+                      />
+            <menuitem id="toolbox2ContextMenu_insertSnippet"
+                      label="&insertSnippet.label;"
+                      class="menuitem-iconic primary_menu_item"
+                      oncommand="ko.toolbox2.invoke_insertSnippet()"
+                      hideUnless="snippet"
+                      testDisableIf="t:multipleSelection"
+                      testDisableUnless="cmd:cmd_insertSnippet"
+                      />
+            <menuitem id="toolbox2ContextMenu_editSnippet"
+                      label="&editSnippet.label;"
+                      class="menuitem-iconic"
+                      oncommand="ko.toolbox2.invoke_editSnippet()"
+                      hideUnless="snippet"
+                      testDisableIf="t:multipleSelection"
+                      />
+            <menuitem id="toolbox2ContextMenu_runCommand"
+                      label="&run.label;"
+                      class="menuitem-iconic primary_menu_item"
+                      oncommand="ko.toolbox2.invoke_runCommand()"
+                      hideUnless="command"
+                      testDisableIf="t:multipleSelection"
+                      />
+            <menuitem id="toolbox2ContextMenu_openURLInBrowser"
+                      label="&openURLInBrowser.label;"
+                      class="menuitem-iconic primary_menu_item"
+                      oncommand="ko.toolbox2.invoke_openURLInBrowser()"
+                      hideUnless="URL"
+                      testDisableIf="t:multipleSelection"
+                      />
+            <menuitem id="toolbox2ContextMenu_openURLInTab"
+                      label="&openURLInTab.label;"
+                      class="menuitem-iconic"
+                      oncommand="ko.toolbox2.invoke_openURLInTab()"
+                      hideUnless="URL"
+                      testDisableIf="t:multipleSelection"
+                      />
+            <menuitem id="toolbox2ContextMenu_share"
+                      class="menuitem-iconic"
+                      label="&shareTool.label;"
+                      oncommand="ko.browse.browseTag('contribute')"
+                      />
+            <menuseparator anonid="primaryseparator"
+                           />
+            <menuitem id="toolbox2ContextMenu_cut"
+                      label="&cut.label;"
+                      class="menuitem-iconic native-cut-icon"
+                      oncommand="ko.toolbox2.cutItem(event)"
+                      disableIf="standardToolbox"
+                      testDisableIf="t:raggedMultipleSelection"
+                      />
+            <menuitem id="toolbox2ContextMenu_copy"
+                      label="&copy.label;"
+                      class="menuitem-iconic native-copy-icon"
+                      oncommand="ko.toolbox2.copyItem(event)"
+                      testDisableIf="t:raggedMultipleSelection"
+                      />
+            <menuitem id="toolbox2ContextMenu_partPaste"
+                      keep_background="true"
+                      class="menuitem-iconic native-paste-icon"
+                      label="&paste.label;"
+                      disableUnless="folder menu toolbar standardToolbox"
+                      oncommand="ko.toolbox2.pasteIntoItem(event)"
+                      testDisableIf="t:multipleSelection t:clipboardHasNoURI"
+                      />
+            <menuseparator anonid="secondaryseparator"
+                           />
+            <menuitem id="toolbox2ContextMenu_showInFileManager"
+                      keep_background="true"
+                      class="menuitem-iconic"
+<!-- #if PLATFORM == "darwin" -->
+                      label="&showInFinder.label;"
+<!-- #elif PLATFORM == "win" -->
+                      label="&showInExplorer.label;"
+<!-- #else -->
+                      label="&showInFileManager.label;"
+<!-- #endif -->
+                      oncommand="ko.toolbox2.showInFileManager(event)"
+                      testDisableIf="t:multipleSelection"
+                      />
+            <menuitem id="toolbox2ContextMenu_saveAs"
+                      keep_background="true"
+                      class="menuitem-iconic"
+                      label="&saveAsDotDotDot.label;"
+                      disableIf="standardToolbox"
+                      oncommand="ko.toolbox2.saveToolsAs(event)"
+                      />
+            <menuitem id="toolbox2ContextMenu_renameItem"
+                      label="&rename.label;"
+                      class="menuitem-iconic"
+                      oncommand="ko.toolbox2.renameItem(event)"
+                      disableIf="standardToolbox"
+                      testDisableIf="t:multipleSelection"
+                      />
+            <menuitem id="toolbox2ContextMenu_reload"
+                      keep_background="true"
+                      class="menuitem-iconic"
+                      label="&reloadTools.label;"
+                      accesskey="&reloadTools.accesskey;"
+                      oncommand="ko.toolbox2.reloadFolder(event);"
+                      disableUnless="folder menu toolbar standardToolbox"
+                      testDisableIf="t:multipleSelection"
+                      />
+            <menuseparator anonid="secondaryseparator_3"
+                           />
+            <menuitem id="toolbox2ContextMenu_delete"
+                      label="&delete.label;"
+                      class="menuitem-iconic list-item-remove-icon"
+                      disableIf="standardToolbox"
+                      oncommand="ko.toolbox2.deleteItem(event)"
+                      />
+            <menuseparator anonid="secondaryseparator_4"
+                      hideIf="folder template standardToolbox"
+                           />
+            <menuitem id="toolbox2ContextMenu_editProperties"
+                      label="&properties.label;"
+                      oncommand="ko.toolbox2.editPropertiesItem(event)"
+                      hideIf="folder template standardToolbox"
+                      testDisableIf="t:multipleSelection"
+                      />
+        </menupopup>
+        </popupset>
+
+    <script src="chrome://komodo/content/toolbox/toolbox2.js"       type="application/x-javascript;version=1.7"/>
+    <script src="chrome://komodo/content/toolbox/toolbox2_command.js"       type="application/x-javascript;version=1.7"/>
+	
+</page>

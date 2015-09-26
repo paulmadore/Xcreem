@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!-- Copyright (c) 2000-2013 ActiveState Software Inc. -->
+<!-- See the file LICENSE.txt for licensing information. -->
+<!DOCTYPE overlay PUBLIC "-//MOZILLA//DTD XUL V1.0//EN" "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" [
+  <!ENTITY % notifyDTD SYSTEM "chrome://notify/locale/notify.dtd">
+  %notifyDTD;
+  <!ENTITY % komodoDTD SYSTEM "chrome://komodo/locale/komodo.dtd">
+  %komodoDTD;
+]>
+
+<?xml-stylesheet href="less://notify/skin/notify.less" type="text/css"?>
+
+<overlay id="notifyOverlay"
+         xmlns:html="http://www.w3.org/1999/xhtml"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <script src="chrome://notify/content/js/observer.js" />
+
+    <popupset id="komodoMainPopupSet">
+        <script id="tpl-notify-panel" type="x-dot-template">
+            <panel anonid="notify-panel"
+                   class="notify-panel {{=it.classlist}}"
+                   type="drag"
+                   noautofocus="true"
+                   noautohide="true"
+                   ignorekeys="true"
+                   level="parent">
+                <hbox class="wrapper">
+                    {{?it.icon}}
+                        <vbox pack="center">
+                            <image class="icon" src="{{=it.icon}}?preset=hud"></image>
+                        </vbox>
+                    {{?}}
+                    <vbox> <!-- Description max-width is not respected unless its in a vbox -->
+                        <description class="description">
+                            {{=it.message}}
+                        </description>
+                    </vbox>
+                    {{?it.undo}}
+                        <button class="undo button-plain plain"/>
+                    {{?}}
+                    {{?!it.noMenu}}
+                    <button type="menu" class="menu button-plain plain">
+                        <menupopup>
+                            <menuitem   anonid="disableCategory"
+                                        label="&disableNotificationsOfType.label;"/>
+                            <!--<menuitem   anonid="preferences"
+                                        label="&notifyPrefs.label;"/>-->
+                        </menupopup>
+                    </button>
+                    {{?}}
+                    <button class="close button-close"/>
+                </hbox>
+            </panel>
+        </script>
+    </popupset>
+
+</overlay>
